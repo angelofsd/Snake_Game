@@ -33,11 +33,21 @@ public class SnakeGame extends JPanel implements KeyListener, Runnable {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // Set the background color to light blue
+        setBackground(new Color(173, 216, 230));
+
+        // Draw the game objects
         g.fillRect(x, y, 10, 10);
         for(int i = 0; i < size; i++) {
             g.fillRect(snakeX[i], snakeY[i], 10, 10);
         }
-        g.drawString("Angel's Snake Game - Score: "+score, 10, 10);
+
+        // Set a larger font size for the score text
+        Font font = new Font("Arial", Font.BOLD, 20);
+        g.setFont(font);
+
+        g.drawString("Angel's Snake Game - Score: "+score, 10, 25);
         g.fillRect(foodX, foodY, 10, 10);
     }
 
@@ -61,7 +71,8 @@ public class SnakeGame extends JPanel implements KeyListener, Runnable {
     public void keyTyped(KeyEvent e) {}
 
     public void run() {
-        while(true) {
+        boolean running = true;
+        while (running) {
             if(direction.equals("right")) {
                 x = x+10;
             }
@@ -85,12 +96,14 @@ public class SnakeGame extends JPanel implements KeyListener, Runnable {
             // Check for collision with itself
             for(int i = 1; i < size; i++) {
                 if(x == snakeX[i] && y == snakeY[i]) {
+                    running = false;
                     gameOver();
                 }
             }
 
             //Check for collision with wall
             if(x < 0 || x > 490 || y < 0 || y > 490) {
+                running = false;
                 gameOver();
             }
             for(int i = size; i > 0; i--) {
@@ -116,7 +129,21 @@ public class SnakeGame extends JPanel implements KeyListener, Runnable {
     }
 
     private void gameOver() {
-        System.out.println("Game Over");
+        // Stop the thread
+        thread.interrupt();
+
+        // Display "Game Over" message in red color
+        Graphics g = getGraphics();
+        g.setColor(Color.RED);
+        g.setFont(new Font("Arial", Font.BOLD, 30));
+        g.drawString("Game Over", 200, 250);
+
+        // Wait for a few seconds before exiting the program
+        try {
+            Thread.sleep(3000); // wait for 3 seconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.exit(0);
     }
 }

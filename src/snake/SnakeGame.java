@@ -35,20 +35,26 @@ public class SnakeGame extends JPanel implements KeyListener, Runnable {
         super.paintComponent(g);
 
         // Set the background color to light blue
-        setBackground(new Color(173, 216, 230));
+        setBackground(new Color(63, 63, 63));
 
         // Draw the game objects
         g.fillRect(x, y, 10, 10);
-        for(int i = 0; i < size; i++) {
-            g.fillRect(snakeX[i], snakeY[i], 10, 10);
+        for (int i = 0; i < size; i++) {
+            drawSnakeSegment(g, snakeX[i], snakeY[i]);
         }
 
         // Set a larger font size for the score text
         Font font = new Font("Arial", Font.BOLD, 20);
         g.setFont(font);
 
-        g.drawString("Angel's Snake Game - Score: "+score, 10, 25);
+        g.drawString("Angel's Snake Game - Score: " + score, 10, 25);
         g.fillRect(foodX, foodY, 10, 10);
+    }
+
+    private void drawSnakeSegment(Graphics g, int x, int y) {
+        // Use custom graphics or image to draw the snake segment
+        g.setColor(Color.GREEN);
+        g.fillOval(x, y, 10, 10);
     }
 
     public void keyPressed(KeyEvent e) {
